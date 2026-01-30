@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // N8N Webhook URL - User will need to import this later or we define it in config
     // For now I'll use a placeholder variable that we can easily update or document
-    const WEBHOOK_URL = 'https://YOUR_N8N_INSTANCE_URL/webhook/travel-itinerary';
+    const WEBHOOK_URL = 'https://dhandapani.app.n8n.cloud/webhook/d8ea3846-ff9e-467c-b2db-98db63de4217';
 
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
