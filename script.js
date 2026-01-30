@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // or we handle the error gracefully.
 
             // For now, let's simulate a success if the URL is the placeholder
-            if (WEBHOOK_URL.includes('YOUR_N8N_INSTANCE_URL')) {
+            if (WEBHOOK_URL.includes('https://dhandapani.app.n8n.cloud/webhook/trip plan')) {
                 await new Promise(r => setTimeout(r, 2000)); // Simulate delay
                 showStatus('Simulated Success: Connect your n8n webhook to make this real!', 'success');
                 console.log('Form payload:', formData);
