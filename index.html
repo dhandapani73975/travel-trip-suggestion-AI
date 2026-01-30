@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Travel Itinerary Generator</title>
+    <meta name="description" content="Generate a personalized travel itinerary using AI.">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="background-animation"></div>
+
+    <main class="container">
+        <header>
+            <h1>Dream Journey AI</h1>
+            <p>Your personalized travel itinerary, crafted by intelligence.</p>
+        </header>
+
+        <form id="itineraryForm">
+            <div class="form-group">
+                <label for="destination">Destination</label>
+                <input type="text" id="destination" name="destination" placeholder="e.g., Paris, Japan, Cape Town"
+                    required>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="days">Duration (Days)</label>
+                    <input type="number" id="days" name="days" min="1" max="60" placeholder="e.g., 7" required>
+                </div>
+                <div class="form-group">
+                    <label for="travelers">Travelers</label>
+                    <input type="number" id="travelers" name="travelers" min="1" max="20" placeholder="e.g., 2"
+                        required>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="budget">Budget (Currency)</label>
+                    <input type="text" id="budget" name="budget" placeholder="e.g., $2000 USD" required>
+                </div>
+                <div class="form-group">
+                    <label for="transport">Mode of Travel</label>
+                    <select id="transport" name="transport" required>
+                        <option value="" disabled selected>Select mode</option>
+                        <option value="flight">Flight</option>
+                        <option value="train">Train</option>
+                        <option value="bus">Bus</option>
+                        <option value="car">Car / Road Trip</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email" placeholder="you@example.com" required>
+                <small>We'll send your itinerary here.</small>
+            </div>
+
+            <div class="form-group">
+                <label for="preferences">Additional Preferences</label>
+                <textarea id="preferences" name="preferences" rows="3"
+                    placeholder="e.g., Vegetarian food, historical sites, no hiking..."></textarea>
+            </div>
+
+            <button type="submit" id="generateBtn">
+                <span class="btn-text">Generate Itinerary</span>
+                <span class="loader hidden"></span>
+            </button>
+        </form>
+
+        <div id="statusMessage" class="hidden"></div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
