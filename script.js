@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const statusMessage = document.getElementById('statusMessage');
 
     // ✅ REAL n8n webhook URL
-    const WEBHOOK_URL = 'https://dhandapani.app.n8n.cloud/webhook/send-email';
+    const WEBHOOK_URL = 'https://dhandapani.app.n8n.cloud/webhook/travel-itinerary';
 
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
