@@ -1,98 +1,77 @@
 {
-    "name": "Travel Itinerary Generator",
-    "nodes": [
-        {
-            "parameters": {
-                "httpMethod": "POST",
-                "path": "travel-itinerary",
-                "options": {}
-            },
-            "id": "webhook-node",
-            "name": "Webhook",
-            "type": "n8n-nodes-base.webhook",
-            "typeVersion": 1,
-            "position": [
-                460,
-                240
-            ]
-        },
-        {
-            "parameters": {
-                "model": "gpt-4",
-                "messages": {
-                    "values": [
-                        {
-                            "role": "system",
-                            "content": "You are an expert travel agent. Create a detailed, day-by-day travel itinerary based on the user's input. Format the output as clean HTML suitable for an email body."
-                        },
-                        {
-                            "role": "user",
-                            "content": "Destination: {{ $json.body.destination }}\nDuration: {{ $json.body.days }} days\nBudget: {{ $json.body.budget }}\nTravelers: {{ $json.body.travelers }}\nMode of Travel: {{ $json.body.transport }}\nPreferences: {{ $json.body.preferences }}"
-                        }
-                    ]
-                }
-            },
-            "id": "openai-node",
-            "name": "OpenAI Chat Model",
-            "type": "n8n-nodes-base.openAi",
-            "typeVersion": 1,
-            "position": [
-                680,
-                240
-            ],
-            "credentials": {
-                "openAiApi": {
-                    "id": "YOUR_OPENAI_CREDENTIAL_ID",
-                    "name": "OpenAI account"
-                }
-            }
-        },
-        {
-            "parameters": {
-                "fromEmail": "your-email@gmail.com",
-                "toEmail": "={{ $json.body.email }}",
-                "subject": "Your {{ $json.body.destination }} Itinerary",
-                "html": "={{ $node[\"OpenAI Chat Model\"].json.content }}",
-                "options": {}
-            },
-            "id": "gmail-node",
-            "name": "Gmail",
-            "type": "n8n-nodes-base.gmail",
-            "typeVersion": 2,
-            "position": [
-                900,
-                240
-            ],
-            "credentials": {
-                "gmailOAuth2": {
-                    "id": "YOUR_GMAIL_CREDENTIAL_ID",
-                    "name": "Gmail account"
-                }
-            }
+  "name": "Travel Itinerary Generator - FIXED",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "travel-itinerary",
+        "options": {
+          "allowedOrigins": "*",
+          "allowMethods": "GET,POST"
         }
-    ],
-    "connections": {
-        "Webhook": {
-            "main": [
-                [
-                    {
-                        "node": "OpenAI Chat Model",
-                        "type": "main",
-                        "index": 0
-                    }
-                ]
-            ]
-        },
-        "OpenAI Chat Model": {
-            "main": [
-                [
-                    {
-                        "node": "Gmail",
-                        "type": "main",
-                        "index": 0
-                    }
-                ]
-            ]
+      },
+      "id": "webhook-node",
+      "name": "Webhook Trigger",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [460, 240]
+    },
+    {
+      "parameters": {
+        "model": "gpt-4",
+        "messages": {
+          "values": [
+            {
+              "role": "system",
+              "content": "You are an expert travel agent. Create a detailed, day-by-day travel itinerary based on the user's input. Format the output as clean HTML suitable for an email body."
+            },
+            {
+              "role": "user",
+              "content": "Destination: {{ $json.body.destination }}\nDuration: {{ $json.body.days }} days\nBudget: {{ $json.body.budget }}\nTravelers: {{ $json.body.travelers }}\nMode of Travel: {{ $json.body.transport }}\nPreferences: {{ $json.body.preferences }}"
+            }
+          ]
         }
+      },
+      "id": "openai-node",
+      "name": "Generate Email Content",
+      "type": "n8n-nodes-base.openAi",
+      "typeVersion": 1,
+      "position": [680, 240]
+    },
+    {
+      "parameters": {
+        "fromEmail": "your-email@gmail.com",
+        "toEmail": "={{ $json.body.email }}",
+        "subject": "Your {{ $json.body.destination }} Itinerary",
+        "html": "={{ $node[\"Generate Email Content\"].json.content }}",
+        "options": {}
+      },
+      "id": "gmail-node",
+      "name": "Send Email",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2,
+      "position": [900, 240]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "respond-node",
+      "name": "Respond to Webhook",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [1120, 240]
     }
+  ],
+  "connections": {
+    "Webhook Trigger": {
+      "main": [[{ "node": "Generate Email Content", "type": "main", "index": 0 }]]
+    },
+    "Generate Email Content": {
+      "main": [[{ "node": "Send Email", "type": "main", "index": 0 }]]
+    },
+    "Send Email": {
+      "main": [[{ "node": "Respond to Webhook", "type": "main", "index": 0 }]]
+    }
+  }
 }
